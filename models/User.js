@@ -1,18 +1,31 @@
 const { Model } = require('objection')
 const validator = require('validator');
-const { encryptPassword } = require('./utils')
+const { encryptPassword } = require('../utils')
 
-/**
- * Creates a new user
- * Required params are: name, username, email & password. 
- * 
- * @returns {QueryBuilder} Query builder isntance representing a user
- */
 class User extends Model {
     static get tableName() {
-        return 'users';
+        return 'users'
     }
 
+    static async get(id) {
+        const user =  await User.query().findById(id)
+        if (!user) {
+            throw new Error(`No user found with id ${id}`)
+        }
+
+        return user
+    }
+
+    static async getAll() {
+        return await User.query()
+    }
+
+    /**
+     * Creates a new user
+     * Required params are: name, username, email & password. 
+     * 
+     * @returns {QueryBuilder} Query builder isntance representing a user
+     */
     static async create(name, username, email, password, role) {
         if (!name) {
             throw new Error('Name is required')
@@ -20,8 +33,11 @@ class User extends Model {
         if (!username) { 
             throw new Error('Username is required')
         }
+        if (!email) {
+            throw new Error('Email is required')
+        }
         if (!validator.isEmail(email)) {
-            throw new Error('A valid email required')
+            throw new Error('Invalid email format')
         }
         if (!password) {
             throw new Error('Password is required')
@@ -32,15 +48,16 @@ class User extends Model {
             .orWhere({email})
 
         if (existingUsers.some(u => u.username == username)) {
-            throw new Error(`A user with username ${username} already exists`)
+            throw new Error(`The username ${username} is taken`)
         }
         if (existingUsers.some(u => u.email == email)) {
-            throw new Error(`A user with the email ${email} already exists`)
+            throw new Error(`THe email ${email} is taken`)
         }
 
         return await User.query().insert({
             name, 
-            username, 
+            username,
+            email,
             password: encryptPassword(password), 
             role: role || 'user'
         })
@@ -53,7 +70,7 @@ class User extends Model {
             throw new Error(`No user with id ${id} exists`)
         }
 
-        user.del()
+        return user.del()
     }
 }
 
