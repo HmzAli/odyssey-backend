@@ -1,9 +1,6 @@
 const { Model } = require('objection')
 const validator = require('validator');
-
-function encript() {
-
-}
+const { encryptPassword } = require('./utils')
 
 /**
  * Creates a new user
@@ -44,7 +41,7 @@ class User extends Model {
         return await User.query().insert({
             name, 
             username, 
-            password: encript(password), 
+            password: encryptPassword(password), 
             role: role || 'user'
         })
     }
