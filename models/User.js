@@ -20,29 +20,7 @@ class User extends Model {
         return await User.query()
     }
 
-    /**
-     * Creates a new user
-     * Required params are: name, username, email & password. 
-     * 
-     * @returns {QueryBuilder} Query builder isntance representing a user
-     */
     static async create(name, username, email, password, role) {
-        if (!name) {
-            throw new Error('Name is required')
-        }
-        if (!username) { 
-            throw new Error('Username is required')
-        }
-        if (!email) {
-            throw new Error('Email is required')
-        }
-        if (!validator.isEmail(email)) {
-            throw new Error('Invalid email format')
-        }
-        if (!password) {
-            throw new Error('Password is required')
-        }
-
         const existingUsers = await User.query()
             .where({username})
             .orWhere({email})
@@ -71,6 +49,26 @@ class User extends Model {
         }
 
         return user.del()
+    }
+
+    static async validate(name, username, email, password) {
+        if (!name) {
+            throw new Error('Name is required')
+        }
+        if (!username) { 
+            throw new Error('Username is required')
+        }
+        if (!email) {
+            throw new Error('Email is required')
+        }
+        if (!validator.isEmail(email)) {
+            throw new Error('Invalid email format')
+        }
+        if (!password) {
+            throw new Error('Password is required')
+        }
+
+        return true
     }
 }
 
