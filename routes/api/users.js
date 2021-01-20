@@ -11,6 +11,7 @@ router.get('/', (request, response) => {
 })
 
 router.get('/:id', (request, response) => {
+    // Validate request.body
     response.send('getting user by id')
 });
 

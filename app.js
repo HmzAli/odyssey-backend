@@ -4,18 +4,25 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const Knex = require('knex')
+const knexConfig = require('./knexfile')
+const { Model } = require('objection')
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/api/users');
 const loginRouter = require('./routes/api/login');
 
+/* Initialize knex */
+const knex = Knex(knexConfig.development);
+Model.knex(knex);
+
 const app = express();
 
-// view engine setup
+/* View engine setup */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
