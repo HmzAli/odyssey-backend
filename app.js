@@ -7,9 +7,9 @@ const Knex = require('knex'),
     knexConfig = require('./knexfile'),
     { Model } = require('objection')
 
-const indexRouter = require('./routes/index'),
-    loginRouter = require('./routes/login'),
-    usersRouter = require('./routes/users')
+const indexRouter = require('./api/index'),
+    loginRouter = require('./api/login'),
+    usersRouter = require('./api/users')
 
 const knex = Knex(knexConfig.development)
 Model.knex(knex)

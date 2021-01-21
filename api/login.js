@@ -1,11 +1,11 @@
 const express = require('express'),
     router = express.Router(),
-    { User } = require('../models/User')
+    userService = require('./user.service')
 
 router.post('/', login)
 
 function login(request, response, next) {
-    User.authenticate(request.body.username, request.body.password)
+    userService.authenticate(request.body)
         .then(userData => response.json(userData))
         .catch(next)
 }

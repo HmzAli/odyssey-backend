@@ -1,6 +1,6 @@
 const express = require('express'),
     router = express.Router(),
-    { User } = require('../models/User')
+    userService = require('./user.service')
 
 router.get('/', getAll)
 router.get('/:id', getOne);
@@ -8,20 +8,19 @@ router.post('/', create)
 router.delete('/:id', deleteOne)
 
 function getAll(request, response, next) {
-    User.getAll()
+    userService.getAll()
         .then(users => response.json(users))
         .catch(next)
 }
 
 function getOne(request, response, next) {
-    User.get(request.params.id)
+    userService.get(request.params.id)
         .then(user => response.json(user))
         .catch(next)
 }
 
 function create(request, response, next) {
-    const { name, username, email, password, role } = request.body
-    User.create(name, username, email, password, role)
+    userService.create(request.body)
         .then(() => response.status(200).send('User successfully created!'))
         .catch(next)
 }
@@ -35,7 +34,7 @@ function deleteOne(request, response, next) {
         response.status(403).json({error: 'You can\'t delete yourself'})
     }
 
-    User.delete(id)
+    userService.deleteOne(id)
         .then(() => response.send('User deleted successfully!'))
         .catch(next)
 }
