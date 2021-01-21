@@ -7,7 +7,8 @@ const jwt = () => {
         path: [
             '/',
             '/api/login',
-            '/api/login/'
+            '/api/login/',
+            '/stylesheets/style.css'
         ]
     });
 }

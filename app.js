@@ -1,19 +1,18 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const jwt = require('./helpers/jwt');
-const errorHandler = require('./helpers/error-handler')
+const express = require('express'),
+    path = require('path'),
+    cookieParser = require('cookie-parser'),
+    logger = require('morgan'),
+    jwt = require('./helpers/jwt'),
+    errorHandler = require('./helpers/error-handler')
 
-const Knex = require('knex')
-const knexConfig = require('./knexfile')
-const { Model } = require('objection')
+const Knex = require('knex'),
+    knexConfig = require('./knexfile'),
+    { Model } = require('objection')
 
-const indexRouter = require('./routes/index');
-const loginRouter = require('./routes/login')
-const usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index'),
+    loginRouter = require('./routes/login'),
+    usersRouter = require('./routes/users');
 
-/* Initialize knex */
 const knex = Knex(knexConfig.development);
 Model.knex(knex);
 
@@ -31,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/* APIs setup */
+/* APIs */
 app.use('/', indexRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);
