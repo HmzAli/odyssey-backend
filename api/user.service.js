@@ -79,12 +79,12 @@ async function deleteOne(id) {
 
 async function authenticate({username, password}) {
     if (!username || !password) {
-        throw new Error('Username and password required')
+        throw new UserError('Username and password required')
     }
 
     const user = await User.query().where({username}).first()
     if (!user || !await comparePasswords(password, user.password)) {
-        throw new Error('Invalid username or password')
+        throw new UserError('Invalid username or password')
     }
 
     const token = jwt.sign({ sub: user.id, role: user.role }, config.secret, { expiresIn: config.expiresIn });
