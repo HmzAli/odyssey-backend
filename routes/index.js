@@ -1,9 +1,9 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express'),
+  router = express.Router()
 
-/* GET home page. */
+/* Home page. */
 router.get('/', function(request, response) {
-  response.render('index', { title: 'Odyssey' })
+  response.render('index', { title: 'Odyssey Backend' })
 });
 
 module.exports = router

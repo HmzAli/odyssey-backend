@@ -1,9 +1,9 @@
-const { Model } = require('objection')
-const validator = require('validator');
-const jwt = require('jsonwebtoken');
-const UserError = require('../helpers/user-error')
-const config = require('../config.json');
-const { encryptPassword, comparePasswords } = require('../utils')
+const { Model } = require('objection'),
+    validator = require('validator'),
+    jwt = require('jsonwebtoken'),
+    UserError = require('../helpers/user-error'),
+    config = require('../config.json'),
+    { encryptPassword, comparePasswords } = require('../utils')
 
 /* 
     Handles all user operations
@@ -11,12 +11,6 @@ const { encryptPassword, comparePasswords } = require('../utils')
 class User extends Model {
     static get tableName() {
         return 'users'
-    }
-
-    $formatJson(json) {
-        json = super.$formatJson(json);
-        delete json.password;
-        return json;
     }
 
     static async get(id) {
@@ -74,7 +68,7 @@ class User extends Model {
             username,
             email,
             password: encryptedPassword, 
-            role: role || 'user'
+            role
         })
     }
 
@@ -102,6 +96,12 @@ class User extends Model {
             token,
             user
         }
+    }
+
+    $formatJson(json) {
+        json = super.$formatJson(json)
+        delete json.password
+        return json
     }
 }
 

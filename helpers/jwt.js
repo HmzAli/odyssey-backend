@@ -1,5 +1,5 @@
-const expressJwt = require('express-jwt');
-const config = require('../config.json');
+const expressJwt = require('express-jwt'),
+    config = require('../config.json')
 
 const jwt = () => {
     const { secret } = config;
@@ -10,7 +10,7 @@ const jwt = () => {
             '/api/login/',
             '/stylesheets/style.css'
         ]
-    });
+    })
 }
 
-module.exports = jwt;
+module.exports = jwt

@@ -1,8 +1,7 @@
-const express = require('express')
-const router = express.Router()
-const { User } = require('../models/User')
+const express = require('express'),
+    router = express.Router(),
+    { User } = require('../models/User')
 
-/* User APIs */
 router.get('/', getAll)
 router.get('/:id', getOne);
 router.post('/', create)
@@ -21,7 +20,7 @@ function getOne(request, response, next) {
 }
 
 function create(request, response, next) {
-    const { name, username, email, password, role } = request.body;
+    const { name, username, email, password, role } = request.body
     User.create(name, username, email, password, role)
         .then(() => response.status(200).send('User successfully created!'))
         .catch(next)
@@ -32,7 +31,6 @@ function deleteOne(request, response, next) {
     if (request.user.role !== 'admin') {
         response.status(403).json({error: 'You have no permission to perform this action'})
     }
-
     if (request.user.sub == id) {
         response.status(403).json({error: 'You can\'t delete yourself'})
     }
