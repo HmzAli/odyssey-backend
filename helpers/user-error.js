@@ -1,8 +1,8 @@
-class CustomError extends Error {
+class UserError extends Error {
     constructor(message, status) {
         super(message, status)
         this.status = status || 400
     }
 }
 
-module.exports = CustomError
+module.exports = UserError
