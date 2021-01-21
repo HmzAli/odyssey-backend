@@ -4,15 +4,10 @@ const router = express.Router()
 const { User } = require('../models/User')
 
 /* User routes */
-router.get('/login', login)
 router.get('/', getAll)
 router.get('/:id', getOne);
 router.post('/', create)
 router.delete('/:id', deleteOne)
-
-function login(request, response) {
-    
-}
 
 function getAll(_, response) {
     User.getAll()
@@ -38,7 +33,7 @@ function getOne(request, response) {
 
 
 function create(request, response) {
-    if (!['admin', 'user'].include(request.body.role)) {
+    if (!['admin', 'user'].includes(request.body.role)) {
         return response.status(400).json({ error: `Unable to create user. ${request.body.role} not a valid role`})
     }
 

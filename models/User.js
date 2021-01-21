@@ -1,11 +1,19 @@
 const { Model } = require('objection')
 const validator = require('validator');
-const { encryptPassword } = require('../utils')
+const jwt = require('jsonwebtoken');
+const config = require('../config.json');
+const { encryptPassword, comparePasswords } = require('../utils')
 
 class User extends Model {
     static get tableName() {
         return 'users'
     }
+
+    $formatJson(json) {
+        json = super.$formatJson(json);
+        delete json.password;
+        return json;
+      }
 
     static async get(id) {
         const user =  await User.query().findById(id)
@@ -21,9 +29,6 @@ class User extends Model {
     }
 
     static async create(name, username, email, password, role) {
-        if (!name) {
-            throw new Error('Name is required')
-        }
         if (!username) { 
             throw new Error('Username is required')
         }
@@ -48,23 +53,44 @@ class User extends Model {
             throw new Error(`THe email ${email} is taken`)
         }
 
+        const encryptedPassword = await encryptPassword(password)
+            .catch(error => {
+                throw new Error('Faild to encrypt password')
+            })
+
         return await User.query().insert({
-            name, 
+            name: name || username, 
             username,
             email,
-            password: encryptPassword(password), 
+            password: encryptedPassword, 
             role: role || 'user'
         })
     }
 
     static async delete(id) {
-        const user = await User.query()
-            .where({id})
-        if (!user.length) {
+        const user = await User.query().findById(id)
+        if (!user) {
             throw new Error(`No user with id ${id} exists`)
         }
 
-        return user.del()
+        return User.query().deleteById(id)
+    }
+
+    static async authenticate(username, password) {
+        if (!username || !password) {
+            throw new Error('Username and password required')
+        }
+
+        const user = await User.query().where({username}).first()
+        if (!user || !await comparePasswords(password, user.password)) {
+            throw new Error('Invalid username or password')
+        }
+
+        const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: config.expiresIn });
+        return {
+            token,
+            user
+        }
     }
 }
 
