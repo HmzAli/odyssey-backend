@@ -28,7 +28,7 @@ class User extends Model {
         return await User.query()
     }
 
-    static async create(name, username, email, password, role) {
+    static async create(name, username, email, password, role='user') {
         if (!username) { 
             throw new Error('Username is required')
         }
@@ -40,6 +40,9 @@ class User extends Model {
         }
         if (!password) {
             throw new Error('Password is required')
+        }
+        if (!['admin', 'user'].includes(role)) {
+            throw new Error(`\'${role}\' not a valid role`)
         }
 
         const existingUsers = await User.query()
@@ -86,7 +89,7 @@ class User extends Model {
             throw new Error('Invalid username or password')
         }
 
-        const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: config.expiresIn });
+        const token = jwt.sign({ sub: user.id, role: user.role }, config.secret, { expiresIn: config.expiresIn });
         return {
             token,
             user

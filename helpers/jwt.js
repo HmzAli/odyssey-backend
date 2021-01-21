@@ -5,7 +5,9 @@ const jwt = () => {
     const { secret } = config;
     return expressJwt({ secret, algorithms: ['HS256'] }).unless({
         path: [
-            '/users/login'
+            '/',
+            '/api/login',
+            '/api/login/'
         ]
     });
 }

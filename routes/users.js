@@ -9,7 +9,9 @@ router.get('/:id', getOne);
 router.post('/', create)
 router.delete('/:id', deleteOne)
 
-function getAll(_, response) {
+function getAll(request, response) {
+    console.log('>> ', request.user)
+
     User.getAll()
         .then(users => {    
             response.json(users)
@@ -33,10 +35,6 @@ function getOne(request, response) {
 
 
 function create(request, response) {
-    if (!['admin', 'user'].includes(request.body.role)) {
-        return response.status(400).json({ error: `Unable to create user. ${request.body.role} not a valid role`})
-    }
-
     const { name, username, email, password, role } = request.body;
     User.create(name, username, email, password, role)
         .then(() => {
@@ -50,6 +48,14 @@ function create(request, response) {
 
 function deleteOne(request, response) {
     const id = request.params.id
+    if (request.user.role !== 'admin') {
+        response.status(403).json({error: 'You have no permission to perform this action'})
+    }
+
+    if (request.user.sub == id) {
+        response.status(403).json({error: 'You can\'t delete yourself'})
+    }
+
     User.delete(id)
         .then(() => {
             response.send('User deleted successfully!')
