@@ -9,4 +9,5 @@
 3. `npm install`
 4. `npm run migrate`
 5. `npm start`
+6. Go to http://localhost:3000 for API info
 
