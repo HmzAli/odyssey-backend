@@ -60,6 +60,7 @@ class User extends Model {
 
         const encryptedPassword = await encryptPassword(password)
             .catch(error => {
+                /* TODO: not sure how to present this error... */
                 throw new Error('Failed to encrypt password')
             })
 
