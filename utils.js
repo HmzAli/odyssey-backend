@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt')
+const config = require('./config.json')
 
 const encryptPassword = (password) => {
-    const saltRounds = 10;
+    const saltRounds = config.saltRounds;
 
     return bcrypt.hash(password, saltRounds).then(hash => {
         return hash

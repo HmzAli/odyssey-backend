@@ -87,7 +87,7 @@ async function authenticate({username, password}) {
         throw new UserError('Invalid username or password')
     }
 
-    const token = jwt.sign({ sub: user.id, role: user.role }, config.secret, { expiresIn: config.expiresIn });
+    const token = jwt.sign({ sub: user.id, role: user.role }, config.secret, { expiresIn: config.tokenExpiry });
     return {
         token,
         user
