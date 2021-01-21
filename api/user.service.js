@@ -1,3 +1,7 @@
+/**
+ * All user operations goes here
+ */
+
 const validator = require('validator'),
     jwt = require('jsonwebtoken'),
     UserError = require('../helpers/user-error'),
