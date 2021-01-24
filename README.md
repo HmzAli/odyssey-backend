@@ -11,3 +11,7 @@
 5. `npm start`
 6. Go to http://localhost:3000 for API info
 
+### NOTE: Login for the first time in front end, use the creds below:
+username:  `dummyuser`
+password: `abc`
+

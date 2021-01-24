@@ -12,6 +12,8 @@ const indexRouter = require('./api/index'),
     loginRouter = require('./api/login'),
     usersRouter = require('./api/users')
 
+const createDummyUser = require('./dummy-user')
+
 const knex = Knex(knexConfig.development)
 Model.knex(knex)
 
@@ -36,5 +38,8 @@ app.use('/api/users', usersRouter)
 
 /* Handler for all errors */
 app.use(errorHandler)
+
+/* Create test user */
+createDummyUser()
 
 module.exports = app
