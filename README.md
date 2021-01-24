@@ -12,6 +12,6 @@
 6. Go to http://localhost:3000 for API info
 
 ##### NOTE: To login for the first time in front end, use the creds below:
-username:  `dummyuser`
+username:  `dummyadmin`
 password: `abc`
 
