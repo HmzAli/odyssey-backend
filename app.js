@@ -1,4 +1,5 @@
 const express = require('express'),
+	cors = require('cors'),
     path = require('path'),
     jwt = require('./helpers/jwt'),
     errorHandler = require('./helpers/error-handler')
@@ -20,6 +21,8 @@ const app = express()
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.json())
+app.use(cors())
 
 app.use(express.urlencoded({ extended: false }))
 
